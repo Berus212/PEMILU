@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- EDIT JUDUL & DESKRIPSI HALAMAN DI SINI -->
+<title>KPUM — Portal Informasi Pemilu Raya 2026</title>
+<meta name="description" content="Pusat informasi resmi Pemilu Raya: paslon, berkas, jadwal, dan pengaduan.">
+<meta name="theme-color" content="#F2B8C6">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Josefin+Sans:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+  /* ===== Palet warna (jangan diubah bila tidak perlu) ===== */
+  :root { --pink:#F2B8C6; --rose:#D88C9A; --cream:#FDF6E3; --maroon:#7A2021;
+          --purple:#5D3A6A; --gold:#D4AF37; --red:#8B2635; --ink:#2C1E1E; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body {
+    min-height:100vh; display:flex; justify-content:center; align-items:flex-start;
+    padding:56px 14px 40px; color:var(--ink); font-family:'Josefin Sans',sans-serif;
+    background:
+      radial-gradient(ellipse at center, rgba(255,255,255,.25), rgba(122,32,33,.18) 100%),
+      repeating-linear-gradient(90deg, var(--pink) 0 22px, #F6C9D3 22px 24px, var(--pink) 24px 46px, #EDA9B9 46px 47px);
+    background-attachment:fixed;
+  }
+  body.lock { overflow:hidden; }
+
+  /* ===== Kartu utama (kartu kunci kamar) ===== */
+  .tag {
+    position:relative; width:100%; max-width:560px; text-align:center;
+    background:var(--cream); border:6px double var(--maroon); border-radius:28px 28px 20px 20px;
+    padding:62px 22px 26px; box-shadow:0 0 0 5px var(--rose), 0 18px 40px rgba(93,58,106,.35);
+    transform-origin:50% -40px; animation:sway 2.4s ease-out 1;
+  }
+  @keyframes sway { 0%{transform:rotate(-3deg)} 25%{transform:rotate(2deg)} 50%{transform:rotate(-1.2deg)} 75%{transform:rotate(.5deg)} 100%{transform:rotate(0)} }
+  .tag::before { content:""; position:absolute; top:18px; left:50%; transform:translateX(-50%);
+    width:26px; height:26px; border-radius:50%; background:var(--pink); border:4px solid var(--gold);
+    box-shadow:inset 0 2px 4px rgba(0,0,0,.3); }
+
+  .badge { display:inline-block; font-family:'Courier Prime',monospace; font-size:.74rem; letter-spacing:.16em;
+    color:var(--cream); background:var(--purple); padding:5px 12px; border:2px solid var(--gold); border-radius:4px; }
+  .logo { width:132px; height:168px; margin:20px auto 16px; display:block; border-radius:50%; object-fit:cover;
+    border:5px solid var(--gold); outline:3px solid var(--maroon); outline-offset:4px; background:var(--pink); }
+  h1 { font-family:'Cinzel',serif; font-weight:900; font-size:clamp(1.35rem,6vw,1.9rem);
+    letter-spacing:.14em; text-transform:uppercase; line-height:1.25; color:var(--maroon); }
+  .desc { margin:14px auto 0; max-width:420px; font-family:'Courier Prime',monospace; font-size:.92rem; line-height:1.6; }
+
+  /* Papan pengumuman lobi: status tahapan */
+  .notice { margin:18px auto 0; max-width:420px; padding:10px 12px; background:var(--cream);
+    border:2px solid var(--maroon); outline:2px solid var(--gold); outline-offset:3px; }
+  .notice small { display:block; font-family:'Courier Prime',monospace; font-size:.7rem; letter-spacing:.2em; color:var(--purple); }
+  .notice strong { display:block; margin-top:4px; font-family:'Cinzel',serif; font-size:.92rem; letter-spacing:.06em; color:var(--red); line-height:1.4; }
+
+  /* Pembatas simetris dengan judul kategori */
+  .divider { display:flex; align-items:center; gap:10px; margin:28px 0 16px; color:var(--gold); }
+  .divider::before,.divider::after { content:""; flex:1; height:3px; border-top:1px solid var(--maroon); border-bottom:1px solid var(--maroon); }
+  .divider span { font-family:'Cinzel',serif; font-weight:700; font-size:.82rem; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--maroon); text-align:center; }
+
+  /* ===== Kartu paslon ===== */
+  .paslon-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:16px; justify-content:center; }
+  .paslon { cursor:pointer; background:var(--cream); border:3px double var(--maroon); border-radius:10px;
+    padding:0 10px 14px; font:inherit; color:inherit; position:relative; margin-top:16px;
+    transition:transform .25s ease, box-shadow .25s ease, background .25s ease; box-shadow:0 4px 0 rgba(44,30,30,.2); }
+  .paslon:hover,.paslon:focus-visible { transform:translateY(-5px); background:#FFF; box-shadow:0 10px 14px rgba(44,30,30,.25); outline:none; }
+  .paslon .no { position:relative; top:-16px; display:inline-block; min-width:64px; padding:8px 14px 4px;
+    background:var(--gold); color:var(--ink); border:2px solid var(--maroon); border-radius:4px 4px 14px 14px; }
+  .paslon .no::before { content:""; position:absolute; top:5px; left:50%; transform:translateX(-50%);
+    width:8px; height:8px; border-radius:50%; background:var(--cream); border:1px solid var(--maroon); }
+  .paslon .no b { display:block; margin-top:8px; font-family:'Cinzel',serif; font-size:1.6rem; line-height:1; }
+  .paslon .no em { display:block; font-style:normal; font-family:'Courier Prime',monospace; font-size:.6rem; letter-spacing:.15em; }
+  .paslon img { display:block; margin:-4px auto 10px; width:92px; height:118px; object-fit:cover; border-radius:50%;
+    border:3px solid var(--gold); outline:2px solid var(--maroon); outline-offset:3px; background:var(--pink); }
+  .paslon .nama { font-family:'Cinzel',serif; font-weight:700; font-size:.82rem; letter-spacing:.06em; text-transform:uppercase; line-height:1.4; color:var(--maroon); }
+  .paslon .cta { display:block; margin-top:8px; font-family:'Courier Prime',monospace; font-size:.72rem; color:var(--purple); }
+
+  /* ===== Tombol = label koper ===== */
+  .links { display:grid; gap:13px; list-style:none; }
+  .links li { filter:drop-shadow(0 4px 0 rgba(44,30,30,.25)); transition:filter .25s; }
+  .links li:hover { filter:drop-shadow(0 9px 6px rgba(44,30,30,.3)); }
+  .link { --bg:var(--purple); display:grid; grid-template-columns:38px 1fr 38px; align-items:center; padding:13px 8px;
+    background:var(--bg); color:var(--cream); text-decoration:none; border:2px solid var(--gold);
+    clip-path:polygon(14px 0,calc(100% - 14px) 0,100% 14px,100% calc(100% - 14px),calc(100% - 14px) 100%,14px 100%,0 calc(100% - 14px),0 14px);
+    transition:transform .25s ease, background .25s ease, color .25s ease; }
+  .links li:nth-child(3n+2) .link { --bg:var(--red); }
+  .links li:nth-child(3n+3) .link { --bg:var(--maroon); }
+  .link .label { display:block; font-family:'Cinzel',serif; font-weight:700; font-size:.88rem; letter-spacing:.1em; text-transform:uppercase; }
+  .link .sub { display:block; margin-top:2px; font-family:'Courier Prime',monospace; font-size:.74rem; opacity:.88; }
+  .link .side { font-size:1.05rem; }
+  .link .bell { color:var(--gold); opacity:.55; transition:transform .3s ease, opacity .3s ease; display:inline-block; }
+  .link:hover,.link:focus-visible { transform:translateY(-4px); background:var(--gold); color:var(--ink); outline:none; }
+  .link:hover .bell,.link:focus-visible .bell { opacity:1; color:var(--maroon); transform:rotate(-18deg) scale(1.2); }
+
+  footer { margin-top:30px; padding-top:14px; border-top:1px solid var(--rose); font-family:'Courier Prime',monospace;
+    font-size:.74rem; letter-spacing:.08em; color:var(--maroon); line-height:1.7; }
+
+  /* ===== Modal biodata (kartu arsip hotel) ===== */
+  .backdrop { position:fixed; inset:0; z-index:50; display:flex; align-items:center; justify-content:center; padding:16px;
+    background:rgba(60,20,40,.6); opacity:0; visibility:hidden; transition:opacity .3s ease, visibility .3s; }
+  .backdrop.open { opacity:1; visibility:visible; }
+  .dossier { position:relative; width:100%; max-width:480px; max-height:90vh; overflow-y:auto; background:var(--cream);
+    border:6px double var(--maroon); box-shadow:0 0 0 4px var(--gold), 0 20px 50px rgba(0,0,0,.45);
+    padding:30px 22px 24px; text-align:center; transform:translateY(20px) scale(.96); transition:transform .3s ease; }
+  .backdrop.open .dossier { transform:none; }
+  .close { position:absolute; top:8px; right:10px; width:36px; height:36px; border:2px solid var(--maroon); border-radius:50%;
+    background:var(--cream); color:var(--maroon); font-size:1rem; cursor:pointer; }
+  .close:hover,.close:focus-visible { background:var(--maroon); color:var(--cream); outline:none; }
+  .dossier .file { font-family:'Courier Prime',monospace; font-size:.72rem; letter-spacing:.2em; color:var(--purple); }
+  .dossier h2 { margin-top:6px; font-family:'Cinzel',serif; font-size:1.25rem; letter-spacing:.1em; text-transform:uppercase; color:var(--maroon); }
+  .dossier .slogan { margin:12px 0 4px; font-family:'Courier Prime',monospace; font-style:italic; color:var(--red); }
+  .person { margin-top:14px; padding:12px; border:1px dashed var(--rose); text-align:left; font-family:'Courier Prime',monospace; font-size:.88rem; line-height:1.55; }
+  .person h3 { font-family:'Cinzel',serif; font-size:.9rem; letter-spacing:.08em; text-transform:uppercase; color:var(--purple); text-align:center; margin-bottom:6px; }
+  .person dt { font-weight:700; margin-top:6px; }
+  .person dd { margin-left:0; }
+  .person ul { margin:2px 0 0 18px; }
+  .dossier .link { margin-top:18px; }
+  .dossier .btnwrap { filter:drop-shadow(0 4px 0 rgba(44,30,30,.25)); }
+
+  @media (max-width:420px) { .tag { padding:60px 14px 22px; border-width:5px; } .link .label { font-size:.8rem; letter-spacing:.06em; } }
+  @media (prefers-reduced-motion:reduce) { .tag{animation:none} *{transition:none !important} }
+</style>
+</head>
+
+<body>
+<main class="tag">
+  <!-- ============ HEADER IDENTITAS PANITIA (diisi lewat script di bawah) ============ -->
+  <span class="badge" id="badge"></span>
+  <img class="logo" id="logo" alt="Logo kepanitiaan">
+  <h1 id="nama"></h1>
+  <p class="desc" id="deskripsi"></p>
+  <div class="notice"><small>STATUS TAHAPAN SAAT INI</small><strong id="tahapan"></strong></div>
+
+  <!-- ============ PASLON ============ -->
+  <div class="divider" aria-hidden="true"><span>✦ Pasangan Calon ✦</span></div>
+  <div class="paslon-grid" id="paslon"></div>
+
+  <!-- ============ KATEGORI TAUTAN ============ -->
+  <div id="groups"></div>
+
+  <footer>Transparan • Jujur • Adil | Hosted on GitHub Pages</footer>
+</main>
+
+<!-- Modal biodata paslon -->
+<div class="backdrop" id="backdrop" aria-hidden="true">
+  <div class="dossier" role="dialog" aria-modal="true" aria-labelledby="m-title" id="dossier">
+    <button class="close" id="close" aria-label="Tutup"><i class="fa-solid fa-xmark"></i></button>
+    <div id="m-body"></div>
+  </div>
+</div>
+
+<script>
+/* =====================================================================
+   PANDUAN EDIT UNTUK PANITIA (tidak perlu paham coding)
+   Ubah hanya teks di dalam tanda kutip "..." pada tiga blok di bawah:
+   1) PANITIA  2) PASLON  3) GROUPS (tautan).
+   Jangan hapus tanda kutip, koma, kurung { } dan [ ].
+   ===================================================================== */
+
+/* ---------- 1) IDENTITAS PANITIA ---------- */
+const PANITIA = {
+  badge:     "OFFICIAL ELECTION PORTAL • EST. 2026",          // EDIT BADGE DI SINI
+  nama:      "Komisi Pemilihan Umum Raya",                      // EDIT NAMA KEPANITIAAN DI SINI
+  deskripsi: "Pusat informasi resmi Pemilu Raya. Semua berkas dan jadwal tersedia di sini, terbuka untuk seluruh pemilih.", // EDIT DESKRIPSI DI SINI
+  tahapan:   "Masa Kampanye & Uji Publik • 12–20 November 2026", // EDIT STATUS TAHAPAN DI SINI
+  logo:      ""   // GANTI DENGAN NAMA FILE LOGO, mis. "logo.png" (upload ke repo). Kosong = logo bawaan.
+};
+
+/* ---------- 2) PASLON (urutan sesuai nomor urut) ----------
+   Salin satu blok { ... }, untuk menambah paslon (maks. 3 agar rapi). */
+const PASLON = [
+  {
+    no: "01",                                                   // EDIT NOMOR URUT DI SINI
+    nama: "Nama Calon A & Nama Calon B",                        // EDIT NAMA PASLON DI SINI
+    foto: "",                                                   // EDIT FOTO DI SINI, mis. "paslon1.jpg". Kosong = placeholder
+    slogan: "Slogan paslon 01",                                 // EDIT SLOGAN DI SINI
+    berkas: "https://drive.google.com/",                        // GANTI LINK PDF VISI & MISI DI SINI
+    anggota: [
+      { peran: "Calon Ketua", nama: "Nama Calon A", ttl: "Bandung, 1 Januari 2005",
+        riwayat: ["Pendidikan: Program Studi ... (angkatan 2023)", "Organisasi: Jabatan ... di ..."] },   // EDIT BIODATA DI SINI
+      { peran: "Calon Wakil Ketua", nama: "Nama Calon B", ttl: "Jakarta, 2 Februari 2005",
+        riwayat: ["Pendidikan: Program Studi ... (angkatan 2023)", "Organisasi: Jabatan ... di ..."] }
+    ]
+  },
+  {
+    no: "02",
+    nama: "Nama Calon C & Nama Calon D",
+    foto: "",
+    slogan: "Slogan paslon 02",
+    berkas: "https://drive.google.com/",
+    anggota: [
+      { peran: "Calon Ketua", nama: "Nama Calon C", ttl: "Surabaya, 3 Maret 2005",
+        riwayat: ["Pendidikan: Program Studi ... (angkatan 2023)", "Organisasi: Jabatan ... di ..."] },
+      { peran: "Calon Wakil Ketua", nama: "Nama Calon D", ttl: "Medan, 4 April 2005",
+        riwayat: ["Pendidikan: Program Studi ... (angkatan 2023)", "Organisasi: Jabatan ... di ..."] }
+    ]
+  }
+];
+
+/* ---------- 3) TAUTAN ----------
+   label = judul tombol | sub = keterangan kecil | url = tujuan (GANTI LINK DI SINI)
+   icon  = ikon FontAwesome (fontawesome.com/icons) | bell = ikon hiasan kanan */
+const GROUPS = [
+  { judul: "Dokumen & Berkas Resmi", items: [
+    { label: "Visi, Misi & Program Kerja", sub: "Unduh berkas paslon (PDF)", url: "https://drive.google.com/",   icon: "fa-solid fa-file-pdf",        bell: "fa-solid fa-key" },
+    { label: "Buku Panduan & Tata Tertib", sub: "Peraturan KPUM / AD-ART",   url: "https://drive.google.com/",   icon: "fa-solid fa-book-open",       bell: "fa-solid fa-star" },
+    { label: "Daftar Pemilih Tetap",       sub: "Cek nama pemilih",          url: "https://example.com/dpt",     icon: "fa-solid fa-users-viewfinder", bell: "fa-solid fa-bell-concierge" }
+  ]},
+  { judul: "Agenda & Partisipasi", items: [
+    { label: "Jadwal & Linimasa",          sub: "Tahapan lengkap pemilu",    url: "https://example.com/jadwal",  icon: "fa-solid fa-calendar-days",   bell: "fa-solid fa-key" },
+    { label: "Daftar Saksi / Relawan",     sub: "Formulir pendaftaran",      url: "https://forms.gle/",          icon: "fa-solid fa-hand-holding-heart", bell: "fa-solid fa-star" },
+    { label: "E-Voting & Lokasi TPS",      sub: "Tautan bilik suara",        url: "https://example.com/vote",    icon: "fa-solid fa-box-archive",     bell: "fa-solid fa-bell-concierge" }
+  ]},
+  { judul: "Pengaduan & Media", items: [
+    { label: "Hotline Pengaduan",          sub: "Lapor via WhatsApp",        url: "https://wa.me/6281234567890", icon: "fa-brands fa-whatsapp",       bell: "fa-solid fa-bell-concierge" },
+    { label: "Instagram Resmi",            sub: "@username_panitia",         url: "https://instagram.com/username", icon: "fa-brands fa-instagram",   bell: "fa-solid fa-star" }
+  ]}
+];
+
+/* =====================================================================
+   KODE DI BAWAH INI TIDAK PERLU DIUBAH
+   ===================================================================== */
+const $ = id => document.getElementById(id);
+const svgAvatar = c => "data:image/svg+xml;utf8," + encodeURIComponent(
+  "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 130'><rect width='100' height='130' fill='#F2B8C6'/><circle cx='50' cy='50' r='20' fill='" + c + "'/><path d='M10 130c0-34 18-48 40-48s40 14 40 48z' fill='" + c + "'/></svg>");
+const svgSeal = "data:image/svg+xml;utf8," + encodeURIComponent(
+  "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 130'><rect width='100' height='130' fill='#F2B8C6'/><text x='50' y='78' font-family='Georgia,serif' font-size='44' font-weight='bold' text-anchor='middle' fill='#7A2021'>K</text><text x='50' y='102' font-size='14' text-anchor='middle' fill='#5D3A6A'>✦</text></svg>");
+
+function el(tag, cls, text) { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+
+/* Header */
+$("badge").textContent = PANITIA.badge;
+$("nama").textContent = PANITIA.nama;
+$("deskripsi").textContent = PANITIA.deskripsi;
+$("tahapan").textContent = PANITIA.tahapan;
+$("logo").src = PANITIA.logo || svgSeal;
+
+/* Tombol tautan (label koper) */
+function makeLink(l) {
+  const a = el("a", "link"); a.href = l.url;
+  if (!l.url.startsWith("mailto:")) { a.target = "_blank"; a.rel = "noopener noreferrer"; }
+  const s1 = el("span", "side"), i1 = el("i", l.icon); i1.setAttribute("aria-hidden", "true"); s1.appendChild(i1);
+  const m = el("span", "main"); m.append(el("span", "label", l.label), el("span", "sub", l.sub));
+  const s2 = el("span", "side"), i2 = el("i", "bell " + l.bell); i2.setAttribute("aria-hidden", "true"); s2.appendChild(i2);
+  a.append(s1, m, s2); return a;
+}
+GROUPS.forEach(g => {
+  const d = el("div", "divider"); d.setAttribute("aria-hidden", "true"); d.appendChild(el("span", null, "✦ " + g.judul + " ✦"));
+  const ul = el("ul", "links");
+  g.items.forEach(l => { const li = el("li"); li.appendChild(makeLink(l)); ul.appendChild(li); });
+  $("groups").append(d, ul);
+});
+
+/* Kartu paslon */
+let lastFocus = null;
+PASLON.forEach((p, i) => {
+  const b = el("button", "paslon"); b.type = "button";
+  b.setAttribute("aria-label", "Lihat biodata paslon nomor " + p.no + ": " + p.nama);
+  const no = el("span", "no"); no.append(el("em", null, "NO. URUT"), el("b", null, p.no));
+  const img = el("img"); img.alt = "Foto paslon " + p.no; img.src = p.foto || svgAvatar(i % 2 ? "#8B2635" : "#5D3A6A");
+  b.append(no, img, el("span", "nama", p.nama), el("span", "cta", "Klik untuk biodata"));
+  b.addEventListener("click", () => openModal(p, b));
+  $("paslon").appendChild(b);
+});
+
+/* Modal biodata */
+function openModal(p, trigger) {
+  lastFocus = trigger;
+  const body = $("m-body"); body.replaceChildren();
+  const h = el("h2", null, "Paslon No. " + p.no); h.id = "m-title";
+  body.append(el("div", "file", "BERKAS ARSIP • NO. " + p.no), h, el("p", "slogan", "“" + p.slogan + "”"));
+  p.anggota.forEach(a => {
+    const box = el("div", "person"); box.appendChild(el("h3", null, a.peran + ": " + a.nama));
+    const dl = el("dl"); dl.append(el("dt", null, "Tempat/Tanggal Lahir"), el("dd", null, a.ttl), el("dt", null, "Riwayat Pendidikan & Organisasi"));
+    const dd = el("dd"), ul = el("ul"); a.riwayat.forEach(r => ul.appendChild(el("li", null, r))); dd.appendChild(ul); dl.appendChild(dd);
+    box.appendChild(dl); body.appendChild(box);
+  });
+  const wrap = el("div", "btnwrap");
+  wrap.appendChild(makeLink({ label: "Berkas Visi & Misi", sub: "Buka / unduh PDF", url: p.berkas, icon: "fa-solid fa-file-pdf", bell: "fa-solid fa-key" }));
+  body.appendChild(wrap);
+  $("backdrop").classList.add("open"); $("backdrop").setAttribute("aria-hidden", "false");
+  document.body.classList.add("lock"); $("close").focus();
+}
+function closeModal() {
+  $("backdrop").classList.remove("open"); $("backdrop").setAttribute("aria-hidden", "true");
+  document.body.classList.remove("lock"); if (lastFocus) lastFocus.focus();
+}
+$("close").addEventListener("click", closeModal);
+$("backdrop").addEventListener("click", e => { if (e.target === $("backdrop")) closeModal(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape" && $("backdrop").classList.contains("open")) closeModal(); });
+</script>
+</body>
+</html>
